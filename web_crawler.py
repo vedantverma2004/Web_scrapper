@@ -1,22 +1,30 @@
 import streamlit as st
-from get_html_playwright import get_html_playwright # Make sure this path is correct
-from beautiful_soup import extract_info # Make sure this path is correct
-import traceback
+from get_html_playwright import get_html_playwright
+from beautiful_soup import extract_info
 
-st.title("Web Crawler Agent")
+st.set_page_config(page_title="Web Scraper", layout="wide")
 
-url = st.text_input("Enter a webpage URL:")
+st.title("🌐 Web Scraper using Playwright + BeautifulSoup")
 
-if st.button("Crawl"):
-    with st.spinner("Crawling..."):
+url = st.text_input("Enter a URL to scrape", "https://example.com")
+
+if st.button("Scrape"):
+    with st.spinner("Fetching HTML..."):
         try:
-            st.write(f"Fetching URL: {url}")
             html = get_html_playwright(url)
-            result = extract_info(html)
-            st.write("## Page Title:", result["title"])
-            st.write("## Meta Data:", result["meta"])
-            st.write("## Links:", result["links"])
-            st.write("## Main Text:", result["main_text"])
+            data = extract_info(html)
+
+            st.subheader("Page Title")
+            st.write(data["title"])
+
+            st.subheader("Meta Tags")
+            st.json(data["meta"])
+
+            st.subheader("Links Found")
+            st.write(data["links"])
+
+            st.subheader("Main Text (First 500 chars)")
+            st.write(data["main_text"])
+
         except Exception as e:
-            print(traceback.format_exc()) # Full stack trace to terminal
-            st.error(f"Error: {e}") # Error details to Streamlit UI
+            st.error(f"Error occurred: {e}")
