@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 
+
 def extract_info(html):
     soup = BeautifulSoup(html, "html.parser")
     title = soup.title.string if soup.title else ""
