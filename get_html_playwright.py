@@ -8,6 +8,9 @@ def get_html_playwright(url):
         browser.close()
     return html
 
+
+
+
 if __name__ == "__main__":
     url = "https://example.com"
     html = get_html_playwright(url)
